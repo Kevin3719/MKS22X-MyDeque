@@ -94,9 +94,28 @@ public class MyDeque<E>{
     }
     size += 1;
   }
-  /*
-  public E removeFirst(){ }
-  public E removeLast(){ }
+  public E removeFirst(){
+    if (size == 0) {
+      return null;
+    }
+    int temp = start;
+    start += 1;
+    if(start == data.length) {
+      start == 0;
+    }
+    return data[temp];
+    }
+  public E removeLast(){
+    if (size == 0) {
+      return null;
+    }
+    int temp = end;
+    end -= 1;
+    if (end == -1) {
+      end = data.length - 1;
+    }
+    return data[temp];
+  }
   public E getFirst(){
     if (size == 0) {
       return null;
@@ -109,7 +128,6 @@ public class MyDeque<E>{
     }
     return data[end];
   }
-  */
 
 
   public static void main(String[] args) {
