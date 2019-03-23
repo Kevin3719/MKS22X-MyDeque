@@ -36,27 +36,41 @@ public class MyDeque<E>{
     return output;
     }
   public void addFirst(E element){
-    if(start != 0 && size == data.length - 1) {
-      start = start - 1;
-      data[start] = element;
-    }
-    if(start == 0 && size == data.length - 1) {
-      start = data.length - 1;
-      data[start - 1] = element;
-    }
     if(size == data.length - 1) {
-      E[] temp = (E[]) new Object[data.length * 2];
-      temp[0] =  element;
-      for(int i = 0; i + start <= end; i++) {
-        temp[i + 1] = data[i + start];
+      E[] temp = (E[]) new Object[data.length * 2 + 1];
+      temp[0] = element;
+      if (start <= end) {
+        for(int i = 0; i <= end; i+= 1) {
+          temp[i + 1] = data[start + i];
+        }
+      }
+      else {
+        int i = 0;
+        for(i = 0;i <= data.length - 1; i+= 1) {
+          temp[i + 1] = data[start + i];
+        }
+        for(int j = 0; j <= end; j+= 1) {
+          temp[i + j + 1] = data[j];
+        }
       }
       start = 0;
       end = data.length;
+      data = temp;
+    }
+    else if(start == 0) {
+      start = data.length - 1;
+      data[start] = element;
+    }
+    else {
+      start -= 1;
+      data[start] = element;
     }
     size += 1;
+  }
+ public void addLast(E element){
+    if (size == data.length - 1) {
+      E[] temp = (E[]) new Object[data.length * 2 + 1];
     }
-  public void addLast(E element){
-    if(end != data.length - 1)
 
 
   }
@@ -65,7 +79,7 @@ public class MyDeque<E>{
 
 
 
-  }
+  /*
   public E removeFirst(){ }
   public E removeLast(){ }
   public E getFirst(){
@@ -79,5 +93,12 @@ public class MyDeque<E>{
       return null;
     }
     return data[end];
+  }
+  */
+
+
+  public static void main(String[] args) {
+    MyDeque midori = new MyDeque();
+
   }
 }
