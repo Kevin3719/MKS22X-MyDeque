@@ -46,11 +46,11 @@ public class MyDeque<E>{
       }
       else {
         int i = 0;
-        for(i = 0;i <= data.length - 1; i+= 1) {
+        for(i = 0;i + start <= data.length - 1; i+= 1) {
           temp[i + 1] = data[start + i];
         }
         for(int j = 0; j <= end; j+= 1) {
-          temp[i + j + 1] = data[j];
+          temp[i + j + 2] = data[j];
         }
       }
       start = 0;
@@ -70,15 +70,30 @@ public class MyDeque<E>{
  public void addLast(E element){
     if (size == data.length - 1) {
       E[] temp = (E[]) new Object[data.length * 2 + 1];
+      if (start >= end) {
+        int i = 0;
+        for(i = 0; i + start < data.length - 1; i+= 1){
+          temp[i] = data[i + start];
+        }
+        for(int j = 0; j <= end; j++) {
+          temp[i + j + 1] = data[j];
+        }
+      }
+      start = 0;
+      end = data.length;
+      data = temp;
+      data[end] = element;
     }
-
-
+    else if (end == data.length - 1) {
+      end = 0;
+      data[end] = element;
+    }
+    else {
+      end += 1;
+      data[end] = element;
+    }
+    size += 1;
   }
-
-
-
-
-
   /*
   public E removeFirst(){ }
   public E removeLast(){ }
