@@ -1,4 +1,5 @@
 import java.util.*;
+@SuppressWarnings("unchecked")
 public class MyDeque<E>{
   private E[] data;
   private int size, start, end;
@@ -18,117 +19,104 @@ public class MyDeque<E>{
   public int size(){
     return size;
     }
-  public String toString(){
-    if (size == 0) {
-      return "{}";
-    }
-    String output = "[";
-    if (start < end) {
-      for (int i = start; i < end; i+= 1) {
-        output += data[i];
-        if (i < end - 1 ) {
-          output += ", ";
+
+    public String toString(){
+        if (size() == 0) return "{}";
+        String output = "{";
+        for (int i = start; i < data.length && (start > end || (start <= end && i <= end)); i++){
+          output += data[i];
+          if (i != end) output += " ";
+          else output += "}";
         }
-      }
-    }
-    if (start > end) {
-      for(int i = start; i < data.length; i++) {
-        output += data[i];
-        if (i < data.length - 1 && i != 1) {
-          output += ", ";
+        if (start > end){
+          for (int i = 0; i <= end; i++){
+            output += data[i];
+            if (i != end) output += " ";
+            else output += "}";
+          }
         }
-      }
-      for(int i = 0; i < end; i++) {
-        output += data[i];
-        if (i < end - 1) {
-          output += ", ";
-        }
-      }
+        return output;
     }
-    output += "]";
-    return output;
-    }
+
+
+
+
   public void addFirst(E element){
     if (element == null) {
       throw new NullPointerException();
     }
-    if(size == data.length - 1) {
-      E[] temp = (E[]) new Object[data.length * 2 + 1];
-      temp[0] = element;
-      if (start <= end) {
-        for(int i = 0; i < end; i+= 1) {
-          temp[i + 1] = data[start + i];
-        }
-      }
-      else {
-        int i = 0;
-        for(i = 0;i + start <= data.length - 1; i+= 1) {
-          temp[i + 1] = data[start + i];
-        }
-        for(int j = 0; j < end; j+= 1) {
-          temp[i + j + 1] = data[j];
-        }
-      }
-      start = 0;
-      end = data.length;
-      data = temp;
+    if(size == data.length ) {
+      resize();
     }
-    else if(start == 0) {
+    if (size != 0) {
+      if(start == 0) {
       start = data.length - 1;
-      data[start] = element;
     }
     else {
       start -= 1;
-      data[start] = element;
     }
+  }
+    data[start] = element;
     size += 1;
   }
+ public void resize() {
+    E[] temp = (E[]) new Object[data.length * 2 + 1];
+    int index = 0;
+    for (int i = start; i < data.length && (start > end || (start <= end && i <= end)); i++) {
+      temp[index] = data[i];
+      index += 1;
+    }
+    if (start > end) {
+      for (int i = 0; i <= end; i++) {
+        temp[index] = data[i];
+        index += 1;
+      }
+    }
+    data =temp;
+    start =0 ;
+    end = size() - 1;
+ }
  public void addLast(E element){
    if (element == null) {
      throw new NullPointerException();
    }
-    if (size == data.length - 1) {
-      E[] temp = (E[]) new Object[data.length * 2 + 1];
-      if (start >= end) {
-        int i = 0;
-        for(i = 0; i + start < data.length - 1; i+= 1){
-          temp[i] = data[i + start];
-        }
-        for(int j = 0; j < end; j++) {
-          temp[i + j + 1] = data[j];
-        }
-      }
-      start = 0;
-      end = data.length;
-      data = temp;
-      data[end] = element;
+    if (size == data.length ) {
+      resize();
     }
-    else if (end == data.length - 1) {
-
-      data[end] = element;
+    if (size() != 0) {
+    if (end == data.length - 1) {
       end = 0;
     }
     else {
-      data[end] = element;
       end += 1;
     }
+  }
+    data[end] = element;
     size += 1;
   }
   public E removeFirst(){
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    int temp = start;
+    if (size == 1) {
+      size = 0;
+      return data[start];
+    }
+    E temp = data[start];
     start += 1;
     if(start == data.length) {
       start = 0;
     }
     size -= 1;
-    return data[temp];
+    return temp;
     }
   public E removeLast(){
     if (size == 0) {
       throw new NoSuchElementException();
+    }
+    if (size == 1) {
+      size = 0;
+      return data[start];
     }
     int temp = end;
     end -= 1;
@@ -161,6 +149,8 @@ public class MyDeque<E>{
     }
     for (int i = 0; i< 22;i+= 1) {
       deque.removeFirst();
+      deque.getLast();
+      deque.getFirst();
     }
     System.out.println(deque);
   }
