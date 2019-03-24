@@ -19,11 +19,14 @@ public class MyDeque<E>{
     return size;
     }
   public String toString(){
+    if (size == 0) {
+      return "{}";
+    }
     String output = "[";
     if (start < end) {
       for (int i = start; i < end; i+= 1) {
         output += data[i];
-        if (i < end - 1) {
+        if (i < end - 1 ) {
           output += ", ";
         }
       }
@@ -31,7 +34,7 @@ public class MyDeque<E>{
     if (start > end) {
       for(int i = start; i < data.length; i++) {
         output += data[i];
-        if (i < end - 1 && i != 1) {
+        if (i < data.length - 1 && i != 1) {
           output += ", ";
         }
       }
@@ -53,7 +56,7 @@ public class MyDeque<E>{
       E[] temp = (E[]) new Object[data.length * 2 + 1];
       temp[0] = element;
       if (start <= end) {
-        for(int i = 0; i <= end; i+= 1) {
+        for(int i = 0; i < end; i+= 1) {
           temp[i + 1] = data[start + i];
         }
       }
@@ -62,8 +65,8 @@ public class MyDeque<E>{
         for(i = 0;i + start <= data.length - 1; i+= 1) {
           temp[i + 1] = data[start + i];
         }
-        for(int j = 0; j <= end; j+= 1) {
-          temp[i + j + 2] = data[j];
+        for(int j = 0; j < end; j+= 1) {
+          temp[i + j + 1] = data[j];
         }
       }
       start = 0;
@@ -91,7 +94,7 @@ public class MyDeque<E>{
         for(i = 0; i + start < data.length - 1; i+= 1){
           temp[i] = data[i + start];
         }
-        for(int j = 0; j <= end; j++) {
+        for(int j = 0; j < end; j++) {
           temp[i + j + 1] = data[j];
         }
       }
@@ -130,7 +133,7 @@ public class MyDeque<E>{
     int temp = end;
     end -= 1;
     if (end == -1) {
-      end = data.length - 1;
+      end = data.length;
     }
     size -= 1;
     return data[temp];
@@ -152,6 +155,13 @@ public class MyDeque<E>{
   public static void main(String[] args) {
     MyDeque<Integer> deque = new MyDeque<>();
     deque.addLast(5);
+    deque.addFirst(6);
+    for (int i = 0; i< 20;i+= 1) {
+      deque.addFirst(i);
+    }
+    for (int i = 0; i< 22;i+= 1) {
+      deque.removeFirst();
+    }
     System.out.println(deque);
   }
 }
